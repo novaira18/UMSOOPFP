@@ -7,7 +7,7 @@
 #include "Student.h"
 #include "UGManager.h"
 #include "SocietyManager.h"
-#include "Utilities.h" // Use the utilities from my previous answers!
+#include "Utilities.h"
 
 using namespace std;
 
@@ -31,11 +31,6 @@ string getMaskedPassword() {
     return password;
 }
 
-void displayWelcomeMessage() {
-    cout << "====================================\n";
-    cout << "   Welcome to University Management System\n";
-    cout << "====================================\n";
-}
 
 void displayLoginMenu() {
     cout << "\nSelect Login Type:\n";
@@ -51,8 +46,8 @@ void displayLoginMenu() {
 int main() {
     int choice;
     string username, password;
+    displayLogo();
 
-    displayWelcomeMessage();
 
     while (true) {
         displayLoginMenu();
