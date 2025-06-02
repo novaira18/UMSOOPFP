@@ -1,4 +1,9 @@
-#include "utilities.h"
+#include "Utilities.h"
+#include <conio.h>
+#include <thread>
+#include <chrono>
+#include <iomanip>
+#include <string>
 #include <iostream>
 #include <cctype>
 #include <algorithm>
@@ -11,12 +16,15 @@
 
 using namespace std;
 
+//void clearScreen() {
+//#ifdef _WIN32
+//    system("cls");
+//#else
+//    system("clear");
+//#endif
+//}
 void clearScreen() {
-#ifdef _WIN32
     system("cls");
-#else
-    system("clear");
-#endif
 }
 
 void printLine(char ch, int length) {
@@ -76,4 +84,101 @@ bool validateLogin(const string& userType, const string& username, const string&
     }
     fin.close();
     return false;
+}
+
+
+void setColor(int color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+
+
+void showLoading(const string& message, int dotCount, int delayMs) {
+    cout << message;
+    for (int i = 0; i < dotCount; ++i) {
+        cout << ".";
+        cout.flush();
+        Sleep(delayMs);
+    }
+    cout << endl;
+}
+
+void printCentered(const string& text, int width) {
+    int padding = (width - text.length()) / 2;
+    for (int i = 0; i < padding; ++i) cout << " ";
+    cout << text << endl;
+}
+
+void displayLogo() {
+    clearScreen();
+    setColor(6);
+    cout << R"(     
+                                         ||         || ||||      ||||  |||||||||||
+                                         ||         || || ||    || || ||
+                                         ||         || ||  ||  ||  ||  ||
+                                         ||         || ||   ||||   ||   ||||||||||
+                                         ||         || ||    ||    ||            ||
+                                         ||         || ||          ||           ||   
+                                         ||||||||||||| ||          ||  ||||||||||         
+                                           University    Management      System
+)" << endl;
+    setColor(7);
+}
+
+void welcomeMessage(const string& audience) {
+    cout << "\t\t\t\t\t************************************" << endl;
+    cout << "\t\t\t\t\t*                                  *" << endl;
+    cout << "\t\t\t\t\t*     WELCOME TO " << setw(16) << left << audience << "*" << endl;
+    cout << "\t\t\t\t\t*          DEPARTMENT              *" << endl;
+    cout << "\t\t\t\t\t*                                  *" << endl;
+    cout << "\t\t\t\t\t************************************" << endl;
+}
+
+void pressAnyKeyToContinue() {
+    cout << "\nPress any key to continue...";
+    _getch();
+}
+
+void displayFile(const string& filename, int color) {
+    setColor(color);
+    ifstream fin(filename);
+    if (!fin.is_open()) {
+        cout << "Error: Could not open " << filename << endl;
+        setColor(7);
+        return;
+    }
+    string line;
+    while (getline(fin, line)) {
+        cout << line << endl;
+    }
+    fin.close();
+    setColor(7);
+}
+
+void fancyDivider(int width, char ch) {
+    for (int i = 0; i < width; ++i) cout << ch;
+    cout << endl;
+}
+
+void showProgressBar(const string& message, int width, int durationMs) {
+    cout << message << " [";
+    cout.flush();
+    int steps = width;
+    int sleepPerStep = durationMs / steps;
+    for (int i = 0; i < steps; ++i) {
+        cout << char(219);
+        cout.flush();
+        Sleep(sleepPerStep);
+    }
+    cout << "] Done!" << endl;
+}
+
+void fadeInText(const string& text, int delayMs, int color) {
+    setColor(color);
+    for (char c : text) {
+        cout << c << flush;
+        Sleep(delayMs);
+    }
+    cout << endl;
+    setColor(7);
 }
